@@ -1,15 +1,13 @@
 //Code copied from user PaulStoffregen on the teensy forums at the following adress:
 //https://forum.pjrc.com/threads/48308-test-code-for-piezo
 
-const int numMotors = 2;
-
-//digital pin numbers for each sensor
-const int motorPins[numMotors] = {11, 12};
-
 const int thresholdMin = 200;  // minimum reading, avoid "noise"
 const int aftershockMillis = 150; // time of aftershocks & vibration
 const int velocityOffset = 10;
 
+//dancing configuration
+const int numMotors = 2;
+const int motorPins[numMotors] = {11, 12};
 const int pulseDuration = 200;
 const int betweenLegs = 500;
 const int numSteps = 20;
@@ -20,7 +18,6 @@ elapsedMillis msec; // timer to end states 1 and 2
 
 void setup() {
   Serial.begin(115200);
-  //pinMode(A0, INPUT_DISABLE);
   while (!Serial && millis() < 2500) /* wait for serial monitor */ ;
 
   //write LOW to motors even if WITH_MOTORS is false
@@ -33,7 +30,6 @@ void setup() {
   }
 
   Serial.println("Piezo Peak Capture");
-
 }
 
 void loop() {
