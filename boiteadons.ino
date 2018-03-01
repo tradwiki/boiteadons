@@ -8,9 +8,8 @@ const int velocityOffset = 10;
 //dancing configuration
 const int numMotors = 2;
 const int motorPins[numMotors] = {11, 12};
-const int pulseDuration = 200;
-const int betweenLegs = 500;
-const int numSteps = 20;
+const int numSteps = 24;
+const int fastSustainSteps = 12;
 
 int state = 0; // 0=idle, 1=looking for peak, 2=ignore aftershocks
 int peak;    // remember the highest reading
@@ -68,15 +67,50 @@ void loop() {
 }
 
 void dance() {
-  for (int i = 0; i < numSteps; i++) {
-    pulseMotor(0);
-    delay(betweenLegs);
-    pulseMotor(1);
+
+  int longDelay = 400;
+  int shortDelay = 0;
+
+  int longPulse = 250;
+  int shortPulse = 175;
+
+  int increments = (longDelay - shortDelay) / numSteps;
+
+  for (int delayDuration = longDelay; delayDuration >= shortDelay; delayDuration -= increments) {
+    int pulseDuration = map(delayDuration, shortDelay, longDelay, shortPulse, longPulse);
+    pulseMotor(0, pulseDuration);
+    delay(delayDuration);
+    pulseMotor(1, pulseDuration);
+    delay(delayDuration);
   }
+  for (int i = 0; i < fastSustainSteps; i++) {
+
+    //right leg seems to prefer long pulses???
+    pulseMotor(0, longPulse);
+    delay(shortDelay);
+    pulseMotor(1, shortPulse);
+    delay(shortDelay);
+  }
+
+  delay(1500);
+
+  digitalWrite(motorPins[0], HIGH);
+  digitalWrite(motorPins[1], HIGH);
+  delay(300);
+  digitalWrite(motorPins[0], LOW);
+  digitalWrite(motorPins[1], LOW);
+
+
 }
 
-void pulseMotor (int motor) {
+void pulseMotor (int motor, int pulseDuration) {
   digitalWrite(motorPins[motor], HIGH);
   delay(pulseDuration);
   digitalWrite(motorPins[motor], LOW);
+
+  if (motor == 0) {
+    Serial.println("right");
+  } else {
+    Serial.println("left");
+  }
 }
