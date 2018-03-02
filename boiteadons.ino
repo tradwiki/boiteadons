@@ -1,15 +1,18 @@
 //Code copied from user PaulStoffregen on the teensy forums at the following adress:
 //https://forum.pjrc.com/threads/48308-test-code-for-piezo
 
-const int thresholdMin = 200;  // minimum reading, avoid "noise"
+const int thresholdMin = 100;  // minimum reading, avoid "noise"
 const int aftershockMillis = 150; // time of aftershocks & vibration
 const int velocityOffset = 10;
 
 //dancing configuration
+const bool withDance = true;
 const int numMotors = 2;
 const int motorPins[numMotors] = {11, 12};
 const int numSteps = 24;
 const int fastSustainSteps = 12;
+
+const int rawOnly = false;
 
 int state = 0; // 0=idle, 1=looking for peak, 2=ignore aftershocks
 int peak;    // remember the highest reading
@@ -33,8 +36,10 @@ void setup() {
 
 void loop() {
   int piezo = analogRead(A0);
-
-  if (state == 0) {
+  if (rawOnly){
+    Serial.println(piezo);
+  }
+  else if (state == 0) {
     // IDLE state: if any reading is above a threshold, begin peak
     if (piezo > thresholdMin) {
       state = 1;
@@ -58,9 +63,10 @@ void loop() {
       msec = 0; // keep resetting timer if above threshold
     } else if (msec > aftershockMillis) {
 
-      //blocking call to main dance routine
-      dance();
-
+      if (withDance) {
+        //blocking call to main dance routine
+        dance();
+      }
       state = 0; // go back to idle after 30 ms below threshold
     }
   }
