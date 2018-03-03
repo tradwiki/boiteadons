@@ -139,7 +139,7 @@ void dance() {
       for (int i = 0; i < midSteps; i++) {
         pulseMotor(0, 200);
         delay(200);
-        pulseMotor(0, 200);
+        pulseMotor(1, 200);
         delay(200);
         pulseMotor(1, 200);
         delay(200);
