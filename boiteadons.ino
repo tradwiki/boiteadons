@@ -160,6 +160,7 @@ void dance() {
       break;
   }
 
+  Serial.println("CLOSING");
   //Crescendo finish
   int increments = (longDelay - shortDelay) / crescendoSteps;
   for (int delayDuration = longDelay; delayDuration >= shortDelay; delayDuration -= increments) {
