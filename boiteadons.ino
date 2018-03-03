@@ -25,15 +25,13 @@ void setup() {
   Serial.begin(115200);
   while (!Serial && millis() < 2500) /* wait for serial monitor */ ;
 
-  //write LOW to motors even if WITH_MOTORS is false
-  //just to be sure they stay off if they are still plugged in
+  //write LOW to motors
   if (numMotors > 0) {
     for (int motor = 0; motor < numMotors; motor++) {
       pinMode(motorPins[motor], OUTPUT);
       digitalWrite(motorPins[motor], LOW);
     }
   }
-
   Serial.println("Piezo Peak Capture");
 }
 
