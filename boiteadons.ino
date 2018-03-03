@@ -139,6 +139,8 @@ void dance() {
       for (int i = 0; i < midSteps; i++) {
         pulseMotor(0, 200);
         delay(200);
+        pulseMotor(0, 200);
+        delay(200);
         pulseMotor(1, 200);
         delay(200);
       }
@@ -184,6 +186,8 @@ void dance() {
   delay(300);
   digitalWrite(motorPins[0], LOW);
   digitalWrite(motorPins[1], LOW);
+
+  Serial.println("DONE");
 }
 
 void pulseMotor (int motor, int pulseDuration) {
